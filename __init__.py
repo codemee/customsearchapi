@@ -6,7 +6,7 @@ import requests
 class ResultObj:
     def __init__(self, title, link, description):
         self.title = title
-        self.link = link
+        self.url = link
         self.description = description
     
 def search(query, num_results=10):
