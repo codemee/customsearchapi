@@ -1,5 +1,7 @@
-GOOGLE_API_KEY = ''
-GOOGLE_ID = ''
+import os
+
+GOOGLE_API_KEY = os.getenv('GOOGLE_API_KEY')
+GOOGLE_ID = os.getenv('GOOGLE_ID')
 
 import requests
 
@@ -9,18 +11,21 @@ class ResultObj:
         self.url = link
         self.description = description
     
-def search(query, num_results=10):
+def search(query, advanced=False, num_results=10):
     url = 'https://www.googleapis.com/customsearch/v1?' \
           f'key={GOOGLE_API_KEY}&' \
           f'cx={GOOGLE_ID}&' \
           f'num={num_results}&' \
           f'q={query}'
-    json = requests.get(url).json()
-    results = []
-    for item in json['items']:
-        results.append(ResultObj(
-            item['title'], 
-            item['link'], 
-            item['snippet'] if 'snippet' in item else "" ))
+    res = requests.get(url)
+    json = res.json()
+    res.close()
 
-    return results
+    for item in json['items']:
+        if advanced:
+            yield ResultObj(
+                item['title'], 
+                item['link'], 
+                item['snippet'] if 'snippet' in item else "" )
+        else:
+            yield item['link']
