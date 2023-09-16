@@ -18,11 +18,8 @@ def search(query, advanced=False, num_results=10, lang='en'):
           f'num={num_results}&' \
           f'q={query}&' \
           f'lr=lang_{lang}'
-    print(url)
     res = requests.get(url)
-    print(res)
     json = res.json()
-    print(json)
     res.close()
 
     for item in json['items']:
