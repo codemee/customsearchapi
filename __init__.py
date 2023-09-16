@@ -11,14 +11,18 @@ class ResultObj:
         self.url = link
         self.description = description
     
-def search(query, advanced=False, num_results=10):
+def search(query, advanced=False, num_results=10, lang='en'):
     url = 'https://www.googleapis.com/customsearch/v1?' \
           f'key={GOOGLE_API_KEY}&' \
           f'cx={GOOGLE_CSE_ID}&' \
           f'num={num_results}&' \
-          f'q={query}'
+          f'q={query}&' \
+          f'lr=lang_{lang}'
+    print(url)
     res = requests.get(url)
+    print(res)
     json = res.json()
+    print(json)
     res.close()
 
     for item in json['items']:
